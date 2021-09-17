@@ -1,23 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 const Search = ({ getQuery }) => {
   const [text, setText] = useState("");
-  const onChange = (q) => {
-    setText(q)
-    getQuery(q)
-  }
+  const timerRef = useRef(null);
+
+  const onChange = (newValue) => {
+    setText(newValue);
+
+    if (newValue && newValue.length > 2) {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+
+      timerRef.current = setTimeout(() => {
+        getQuery(newValue);
+      }, 500);
+    } else if (
+      ((newValue && newValue.length <= 2) || !newValue) &&
+      text.length > 2
+    ) {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+
+      timerRef.current = setTimeout(() => {
+        getQuery('');
+      }, 500);
+    }
+  };
   return (
     <section className="search">
-      <form>
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search characters"
-          value={text}
-          onChange={(e) => onChange(e.target.value)}
-          autoFocus
-        />
-      </form>
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Search characters"
+        value={text}
+        onChange={({ target }) => onChange(target.value)}
+        autoFocus
+      />
     </section>
   );
 };

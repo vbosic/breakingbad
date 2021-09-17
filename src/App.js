@@ -3,15 +3,17 @@ import axios from "axios";
 import Header from "./components/ui/Header";
 import CharacterGrid from "./components/characters/CharacterGrid";
 import Search from "./components/ui/Search";
+import Spinner from "./components/ui/Spinner";
 import "./App.css";
 
 const App = () => {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     const fetchItems = async () => {
+      setIsLoading(true);
       const result = await axios(
         `https://www.breakingbadapi.com/api/characters?name=${query}`
       );
@@ -25,8 +27,12 @@ const App = () => {
   return (
     <div className="container">
       <Header />
-      <Search getQuery={(q) => setQuery(q)}/>
-      <CharacterGrid isLoading={isLoading} items={items}/>
+      <Search getQuery={(q) => setQuery(q)} />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <CharacterGrid isLoading={isLoading} items={items} />
+      )}
     </div>
   );
 };
