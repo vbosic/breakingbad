@@ -18,7 +18,7 @@ const CharacterItem = ({ item }) => {
                           <strong>Nickname:</strong> {item.nickname}
                       </li>
                       <li>
-                          <strong>Birthdate:</strong> {item.birthday}
+                          <strong>DOB:</strong> {item.birthday}
                       </li>
                       <li>
                           <strong>Status:</strong> {item.status}
